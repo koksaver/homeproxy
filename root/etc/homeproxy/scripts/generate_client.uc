@@ -286,6 +286,28 @@ function get_outbound(cfg) {
 	}
 }
 
+function get_inbound(cfg) {
+	if (isEmpty(cfg))
+		return null;
+
+	if (cfg in ['dns-in', 'redirect-in', 'tproxy-in', 'tun-in'])
+		return cfg;
+	else {
+		return null;
+	}
+}
+
+function parse_inbound(rawibs) {
+	if (type(rawibs) !== 'array' || isEmpty(rawibs))
+		return null;
+
+	let ibs = [];
+	for (let i in rawibs)
+		push(ibs, get_inbound(i));
+
+	return ibs;
+}
+
 function get_resolver(cfg) {
 	if (isEmpty(cfg))
 		return null;
@@ -397,6 +419,7 @@ if (!isEmpty(main_node)) {
 			return;
 
 		push(config.dns.rules, {
+			inbound: parse_inbound(cfg.inbound),
 			ip_version: strToInt(cfg.ip_version),
 			query_type: parse_dnsquery(cfg.query_type),
 			network: cfg.network,

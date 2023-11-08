@@ -715,6 +715,21 @@ return view.extend({
 		so.rmempty = false;
 		so.readonly = true;
 
+		so = ss.option(form.MultiValue, 'inbound', _('Inbound'),
+			_('Match inbound.'));
+		//so.load = function(section_id) {
+		//	delete this.keylist;
+		//	delete this.vallist;
+//
+		//	uci.sections(data[0], 'routing_node', (res) => {
+		//		if (res.enabled === '1')
+		//			this.value(res['.name'], res.label);
+		//	});
+//
+		//	return this.super('load', section_id);
+		//}
+		so.modalonly = true;
+
 		so = ss.option(form.ListValue, 'ip_version', _('IP Version'));
 		so.value('4', _('IPv4'));
 		so.value('6', _('IPv6'));
