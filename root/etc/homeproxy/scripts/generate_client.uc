@@ -402,6 +402,7 @@ if (!isEmpty(main_node)) {
 			ip_version: strToInt(cfg.ip_version),
 			query_type: parse_dnsquery(cfg.query_type),
 			network: cfg.network,
+			auth_user: cfg.auth_user,
 			protocol: cfg.protocol,
 			domain: cfg.domain,
 			domain_suffix: cfg.domain_suffix,
@@ -583,6 +584,7 @@ if (!isEmpty(main_node)) {
 
 		push(config.route.rules, {
 			ip_version: strToInt(cfg.ip_version),
+			auth_user: cfg.auth_user,
 			protocol: cfg.protocol,
 			network: cfg.network,
 			domain: cfg.domain,

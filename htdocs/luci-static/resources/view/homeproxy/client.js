@@ -440,6 +440,10 @@ return view.extend({
 		so.value('', _('Both'));
 		so.modalonly = true;
 
+		so = ss.option(form.DynamicList, 'auth_user', _('Auth user'),
+			_('Match auth user.'));
+		so.modalonly = true;
+
 		so = ss.option(form.MultiValue, 'protocol', _('Protocol'),
 			_('Sniffed protocol, see <a target="_blank" href="https://sing-box.sagernet.org/configuration/route/sniff/">Sniff</a> for details.'));
 		so.value('http', _('HTTP'));
@@ -733,6 +737,10 @@ return view.extend({
 		so.value('tcp', _('TCP'));
 		so.value('udp', _('UDP'));
 		so.value('', _('Both'));
+
+		so = ss.option(form.DynamicList, 'auth_user', _('Auth user'),
+			_('Match auth user.'));
+		so.modalonly = true;
 
 		so = ss.option(form.MultiValue, 'protocol', _('Protocol'),
 			_('Sniffed protocol, see <a target="_blank" href="https://sing-box.sagernet.org/configuration/route/sniff/">Sniff</a> for details.'));
