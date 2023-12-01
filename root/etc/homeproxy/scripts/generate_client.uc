@@ -130,6 +130,18 @@ function parse_dnsquery(strquery) {
 
 }
 
+function parse_uid(struid) {
+	if (type(struid) !== 'array' || isEmpty(struid))
+		return null;
+
+	let uids = [];
+	for (let i in struid)
+		push(uids, int(i));
+
+	return uids;
+
+}
+
 function generate_outbound(node) {
 	if (type(node) !== 'object' || isEmpty(node))
 		return null;
@@ -418,6 +430,7 @@ if (!isEmpty(main_node)) {
 			process_name: cfg.process_name,
 			process_path: cfg.process_path,
 			user: cfg.user,
+			user_id: parse_uid(cfg.user_id),
 			invert: (cfg.invert === '1'),
 			outbound: get_outbound(cfg.outbound),
 			server: get_resolver(cfg.server),
@@ -603,6 +616,7 @@ if (!isEmpty(main_node)) {
 			process_name: cfg.process_name,
 			process_path: cfg.process_path,
 			user: cfg.user,
+			user_id: parse_uid(cfg.user_id),
 			invert: (cfg.invert === '1'),
 			outbound: get_outbound(cfg.outbound)
 		});

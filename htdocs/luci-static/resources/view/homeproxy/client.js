@@ -527,6 +527,11 @@ return view.extend({
 			_('Match user name.'));
 		so.modalonly = true;
 
+		so = ss.option(form.DynamicList, 'user_id', _('User ID'),
+			_('Match user ID.'));
+		so.datatype = 'uinteger';
+		so.modalonly = true;
+
 		so = ss.option(form.Flag, 'invert', _('Invert'),
 			_('Invert match result.'));
 		so.default = so.disabled;
@@ -810,6 +815,11 @@ return view.extend({
 
 		so = ss.option(form.DynamicList, 'user', _('User'),
 			_('Match user name.'));
+		so.modalonly = true;
+
+		so = ss.option(form.DynamicList, 'user_id', _('User ID'),
+			_('Match user ID.'));
+		so.datatype = 'uinteger';
 		so.modalonly = true;
 
 		so = ss.option(form.Flag, 'invert', _('Invert'),
