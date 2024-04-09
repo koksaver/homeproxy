@@ -355,6 +355,11 @@ return view.extend({
 		so.depends('tcpip_stack', 'gvisor');
 		so.rmempty = false;
 
+		so = ss.option(form.Flag, 'handle_stun_traffic', _('Handle STUN traffic'),
+			_('Handle UDP STUN traffic via firewall rules by default.'));
+		so.default = so.disabled;
+		so.rmempty = false;
+
 		so = ss.option(form.Flag, 'bypass_cn_traffic', _('Bypass CN traffic'),
 			_('Bypass mainland China traffic via firewall rules by default.'));
 		so.default = so.disabled;

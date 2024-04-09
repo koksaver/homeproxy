@@ -39,7 +39,7 @@ const uci = cursor();
 uci.load(cfgname);
 
 const routing_mode = uci.get(cfgname, 'config', 'routing_mode') || 'bypass_mainland_china';
-let outbound_node, outbound_udp_node, china_dns_server, bypass_cn_traffic;
+let outbound_node, outbound_udp_node, china_dns_server, bypass_cn_traffic, handle_stun_traffic;
 
 if (routing_mode !== 'custom') {
 	outbound_node = uci.get(cfgname, 'config', 'main_node') || 'nil';
@@ -48,11 +48,16 @@ if (routing_mode !== 'custom') {
 } else {
 	outbound_node = uci.get(cfgname, 'routing', 'default_outbound') || 'nil';
 	bypass_cn_traffic = uci.get(cfgname, 'routing', 'bypass_cn_traffic') || '0';
+	handle_stun_traffic = uci.get(cfgname, 'routing', 'handle_stun_traffic') || '0';
 }
 
 let routing_port = uci.get(cfgname, 'config', 'routing_port') || 'common';
 if (routing_port === 'common')
 	routing_port = uci.get(cfgname, 'infra', 'common_port') || '22,53,80,143,443,465,587,853,873,993,995,8080,8443,9418';
+let routing_stun_port = uci.get(cfgname, 'infra', 'common_stun_port') || '3478,19302';
+
+if (handle_stun_traffic === '1')
+	routing_port = routing_port + ',' + routing_stun_port;
 
 const proxy_mode = uci.get(cfgname, 'config', 'proxy_mode') || 'redirect_tproxy',
       ipv6_support = uci.get(cfgname, 'config', 'ipv6_support') || '0';
@@ -226,6 +231,12 @@ set homeproxy_routing_port {
 	auto-merge
 	elements = { {{ join(', ', split(routing_port, ',')) }} }
 }
+set homeproxy_routing_stun_port {
+	type inet_service
+	flags interval
+	auto-merge
+	elements = { {{ join(', ', split(routing_stun_port, ',')) }} }
+}
 {% endif %}
 
 {# TCP redirect #}
@@ -237,6 +248,9 @@ chain homeproxy_redirect_proxy {
 chain homeproxy_redirect_proxy_port {
 	{% if (routing_port !== 'all'): %}
 	tcp dport != @homeproxy_routing_port counter return
+	{% (handle_stun_traffic === '1'): %}
+	tcp dport @homeproxy_routing_stun_port counter return
+	{% endif %}
 	{% endif %}
 	goto homeproxy_redirect_proxy
 }
@@ -549,6 +563,9 @@ chain homeproxy_mangle_tun_mark {
 	{% if (routing_port !== 'all'): %}
 	{% if (proxy_mode === 'tun'): %}
 	tcp dport != @homeproxy_routing_port counter return
+	{% (handle_stun_traffic === '1'): %}
+	tcp dport @homeproxy_routing_stun_port counter return
+	{% endif %}
 	{% endif /* proxy_mode */ %}
 	udp dport != @homeproxy_routing_port counter return
 	{% endif /* routing_port */ %}
