@@ -748,6 +748,7 @@ if (!isEmpty(main_node)) {
 		push(config.route.rules, {
 			ip_version: strToInt(cfg.ip_version),
 			protocol: cfg.protocol,
+			client: cfg.client,
 			network: cfg.network,
 			domain: cfg.domain,
 			domain_suffix: cfg.domain_suffix,

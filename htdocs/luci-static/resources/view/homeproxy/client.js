@@ -540,6 +540,13 @@ return view.extend({
 		so.value('bittorrent', _('BitTorrent'));
 		so.value('dtls', _('DTLS'));
 
+		so = ss.taboption('field_other', form.MultiValue, 'client', _('Client type'),
+			_('Sniffed client type, see <a target="_blank" href="https://sing-box.sagernet.org/configuration/route/sniff/">Sniff</a> for details.'));
+		so.value('chromium');
+		so.value('safari');
+		so.value('firefox');
+		so.value('quic-go');
+
 		so = ss.taboption('field_other', form.ListValue, 'network', _('Network'));
 		so.value('tcp', _('TCP'));
 		so.value('udp', _('UDP'));
