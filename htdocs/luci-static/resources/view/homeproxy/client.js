@@ -1001,16 +1001,34 @@ return view.extend({
 		so.editable = true;
 
 		so = ss.option(form.ListValue, 'type', _('Type'));
+		so.value('inline', _('Inline'));
 		so.value('local', _('Local'));
 		so.value('remote', _('Remote'));
 		so.default = 'remote';
 		so.rmempty = false;
+
+		so = ss.option(form.TextValue, 'rules', _('"rules":'),
+			_('Please type <a target="_blank" href="https://sing-box.sagernet.org/configuration/rule-set/headless-rule/">Headless Rules</a> directly.'));
+		so.monospace = true;
+		so.placeholder = '[\n  {\n    "domain": "test.com",\n    "domain_suffix": ".example.com"\n  }\n]';
+		so.rmempty = false;
+		so.depends('type', 'inline');
+		so.modalonly = true;
 
 		so = ss.option(form.ListValue, 'format', _('Format'));
 		so.value('source', _('Source file'));
 		so.value('binary', _('Binary file'));
 		so.default = 'source';
 		so.rmempty = false;
+		so.textvalue = function(section_id) {
+			var cval = this.cfgvalue(section_id) || this.default;
+			var inline = L.bind(function() {
+				let cval = this.cfgvalue(section_id) || this.default;
+				return (cval === 'inline') ? true : false;
+			}, ss.getOption('type'))
+			return inline() ? _('none') : cval;
+		};
+		so.depends({'type': 'inline', '!reverse': true});
 
 		so = ss.option(form.Value, 'path', _('Path'));
 		so.datatype = 'file';
@@ -1057,6 +1075,14 @@ return view.extend({
 		}
 		so.default = 'direct-out';
 		so.rmempty = false;
+		so.textvalue = function(section_id) {
+			var cval = this.cfgvalue(section_id) || this.default;
+			var remote = L.bind(function() {
+				let cval = this.cfgvalue(section_id) || this.default;
+				return (cval === 'remote') ? true : false;
+			}, ss.getOption('type'))
+			return remote() ? cval : _('none');
+		};
 		so.depends('type', 'remote');
 
 		so = ss.option(form.Value, 'update_interval', _('Update interval'),
