@@ -200,16 +200,34 @@ return view.extend({
 		o.editable = true;
 
 		o = s.option(form.ListValue, 'type', _('Type'));
+		o.value('inline', _('Inline'));
 		o.value('local', _('Local'));
 		o.value('remote', _('Remote'));
 		o.default = 'remote';
 		o.rmempty = false;
+
+		o = s.option(form.TextValue, 'rules', _('"rules":'),
+			_('Please type <a target="_blank" href="https://sing-box.sagernet.org/configuration/rule-set/headless-rule/">Headless Rules</a> directly.'));
+		o.monospace = true;
+		o.placeholder = '[\n  {\n    "domain": "test.com",\n    "domain_suffix": ".example.com"\n  }\n]';
+		o.rmempty = false;
+		o.depends('type', 'inline');
+		o.modalonly = true;
 
 		o = s.option(form.ListValue, 'format', _('Format'));
 		o.value('source', _('Source file'));
 		o.value('binary', _('Binary file'));
 		o.default = 'source';
 		o.rmempty = false;
+		o.textvalue = function(section_id) {
+			var cval = this.cfgvalue(section_id) || this.default;
+			var inline = L.bind(function() {
+				let cval = this.cfgvalue(section_id) || this.default;
+				return (cval === 'inline') ? true : false;
+			}, s.getOption('type'))
+			return inline() ? _('none') : cval;
+		};
+		o.depends({'type': 'inline', '!reverse': true});
 
 		o = s.option(form.Value, 'path', _('Path'));
 		o.datatype = 'file';
