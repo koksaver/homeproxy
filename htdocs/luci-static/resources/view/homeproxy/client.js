@@ -988,6 +988,11 @@ return view.extend({
 		so.default = so.disabled;
 		so.modalonly = true;
 
+		so = ss.taboption('field_other', form.Flag, 'rule_set_ip_cidr_accept_empty', _('Accept empty response'),
+			_('Make <code>ip_cidr</code> rules in rule-sets accept empty query response.'));
+		so.default = so.disabled;
+		so.modalonly = true;
+
 		so = ss.taboption('field_other', form.Flag, 'invert', _('Invert'),
 			_('Invert match result.'));
 		so.default = so.disabled;

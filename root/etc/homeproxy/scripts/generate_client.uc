@@ -549,6 +549,7 @@ if (!isEmpty(main_node)) {
 			clash_mode: cfg.clash_mode,
 			rule_set: get_ruleset(cfg.rule_set),
 			rule_set_ip_cidr_match_source: (cfg.rule_set_ip_cidr_match_source === '1') || null,
+			rule_set_ip_cidr_accept_empty: (cfg.rule_set_ip_cidr_accept_empty === '1') || null,
 			invert: (cfg.invert === '1') || null,
 			outbound: get_outbound(cfg.outbound),
 			server: get_resolver(cfg.server),
