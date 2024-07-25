@@ -638,8 +638,8 @@ return view.extend({
 		}
 		so.modalonly = true;
 
-		so = ss.taboption('field_other', form.Flag, 'rule_set_ipcidr_match_source', _('Match source IP via rule set'),
-			_('Make IP CIDR in rule set used to match the source IP.'));
+		so = ss.taboption('field_other', form.Flag, 'rule_set_ip_cidr_match_source', _('Match source IP via rule set'),
+			_('Make <code>ip_cidr</code> in rule-sets match the source IP.'));
 		so.default = so.disabled;
 		so.modalonly = true;
 
@@ -983,8 +983,8 @@ return view.extend({
 		}
 		so.modalonly = true;
 
-		so = ss.taboption('field_other', form.Flag, 'rule_set_ipcidr_match_source', _('Rule set IP CIDR as source IP'),
-			_('Make <code>ipcidr</code> in rule sets match the source IP.'));
+		so = ss.taboption('field_other', form.Flag, 'rule_set_ip_cidr_match_source', _('Rule set IP CIDR as source IP'),
+			_('Make <code>ip_cidr</code> rule items in rule-sets match the source IP.'));
 		so.default = so.disabled;
 		so.modalonly = true;
 
