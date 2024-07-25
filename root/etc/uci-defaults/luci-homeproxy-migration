@@ -13,4 +13,7 @@ elif echo "$china_dns_server" | grep -q ","; then
 fi
 [ -z "$(uci -q changes "homeproxy")" ] || uci -q commit "homeproxy"
 
+# sing-box 1.10
+sed -i '/^\s*option rule_set_ipcidr_match_source\b/{s|rule_set_ipcidr_match_source|rule_set_ip_cidr_match_source|}' /etc/config/homeproxy
+
 exit 0
