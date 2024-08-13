@@ -210,6 +210,23 @@ return view.extend({
 			_('Please type <a target="_blank" href="https://sing-box.sagernet.org/configuration/rule-set/headless-rule/">Headless Rules</a> directly.'));
 		o.monospace = true;
 		o.placeholder = '[\n  {\n    "domain": "test.com",\n    "domain_suffix": ".example.com"\n  }\n]';
+		o.validate = function(section_id, value) {
+			if (section_id) {
+				if (!value)
+					return _('Expecting: %s').format(_('non-empty value'));
+
+				try {
+					var arr = JSON.parse(value.trim());
+					if (!arr.length)
+						return _('Expecting: %s').format(_('valid JSON array'));
+				}
+				catch(e) {
+					return _('Expecting: %s').format(_('valid JSON array'));
+				}
+			}
+
+			return true;
+		}
 		o.rmempty = false;
 		o.depends('type', 'inline');
 		o.modalonly = true;
