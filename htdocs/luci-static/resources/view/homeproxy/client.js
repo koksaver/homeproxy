@@ -539,6 +539,7 @@ return view.extend({
 		so.value('stun', _('STUN'));
 		so.value('bittorrent', _('BitTorrent'));
 		so.value('dtls', _('DTLS'));
+		so.value('ssh', _('SSH'));
 
 		so = ss.taboption('field_other', form.MultiValue, 'client', _('Client type'),
 			_('Sniffed client type, see <a target="_blank" href="https://sing-box.sagernet.org/configuration/route/sniff/">Sniff</a> for details.'));
