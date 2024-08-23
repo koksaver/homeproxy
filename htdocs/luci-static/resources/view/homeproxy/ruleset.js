@@ -13,7 +13,7 @@
 
 'require homeproxy as hp';
 
-const docdata = 'base64,' + 'cmxzdHBsYWNlaG9sZGVy'
+const docdatagz = 'data:application/octet-stream;base64,' + 'H4sIAAAAAAAAAyvKKS4pyElMTs3Iz0lJLQIA8fIyYQ8AAAA='
 
 function parseRulesetLink(uri) {
 	var config,
@@ -87,15 +87,34 @@ function parseRulesetLink(uri) {
 	return config;
 }
 
+/* Reference Links */
+// https://github.com/scottschiller/ArmorAlley/blob/master/src/floppy/index-floppy.html
+function fetchGZ(url, callback) {
+	const decompress = async (url) => {
+		const ds = new DecompressionStream('gzip');
+		const response = await fetch(url);
+		const blob_in = await response.blob();
+		const stream_in = blob_in.stream().pipeThrough(ds);
+		const blob_out = await new Response(stream_in).blob();
+		return await blob_out.text();
+	};
+
+	decompress(url).then((result) => callback?.(result));
+}
+
 return view.extend({
 	load: function() {
+		var payload;
+		fetchGZ(docdatagz, (resp) => {payload = resp;});
 		return Promise.all([
-			uci.load('homeproxy')
+			uci.load('homeproxy'),
+			L.resolveDefault(payload, 'Not here')
 		]);
 	},
 
 	render: function(data) {
-		var m, s, o;
+		var m, s, o,
+			docdata = 'base64,' + btoa(data[1]);
 
 		m = new form.Map('homeproxy', _('Edit ruleset'));
 
