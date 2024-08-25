@@ -60,6 +60,20 @@ function parseRulesetLink(uri) {
 			}
 
 			break;
+		case 'inline':
+			var url = new URL('inline:' + uri[1]);
+			var rules = JSON.parse(hp.decodeBase64Str(url.pathname));
+
+			if (rules && rules.length) {
+				config = {
+					label: url.hash ? decodeURIComponent(url.hash.slice(1)) : null,
+					type: 'inline',
+					rules: JSON.stringify(rules, null, 2),
+					href: String.format('inline:%s', JSON.stringify(rules))
+				};
+			}
+
+			break;
 		}
 	}
 
@@ -98,10 +112,11 @@ return view.extend({
 		s.handleLinkImport = function() {
 			var textarea = new ui.Textarea('', {
 				'placeholder': 'http(s)://github.com/sagernet/sing-geoip/raw/rule-set/geoip-hk.srs?file=srs&rawquery=good%3Djob#GeoIP-HK\n' +
-							   'file:///etc/homeproxy/ruleset/example.json?file=json#Example%20file\n'
+							   'file:///etc/homeproxy/ruleset/example.json?file=json#Example%20file\n' +
+							   'inline://W3siZG9tYWluX3N1ZmZpeCI6WyIuaGsiXX1d#HK-TLD\n'
 			});
 			ui.showModal(_('Import rule-set links'), [
-				E('p', _('Supports rule-set links of type: <code>local, remote</code> and format: <code>source, binary</code>.</br>') +
+				E('p', _('Supports rule-set links of type: <code>inline, local, remote</code> and format: <code>source, binary</code>.</br>') +
 							_('Please refer to <a href="%s" target="_blank">%s</a> for link format standards.')
 								.format('data:text/html;' + docdata, _('Ruleset-URI-Scheme'))),
 				textarea.render(),
