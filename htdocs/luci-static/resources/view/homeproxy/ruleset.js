@@ -87,34 +87,18 @@ function parseRulesetLink(uri) {
 	return config;
 }
 
-/* Reference Links */
-// https://github.com/scottschiller/ArmorAlley/blob/master/src/floppy/index-floppy.html
-function fetchGZ(url, callback) {
-	const decompress = async (url) => {
-		const ds = new DecompressionStream('gzip');
-		const response = await fetch(url);
-		const blob_in = await response.blob();
-		const stream_in = blob_in.stream().pipeThrough(ds);
-		const blob_out = await new Response(stream_in).blob();
-		return await blob_out.text();
-	};
-
-	decompress(url).then((result) => callback?.(result));
-}
-
 return view.extend({
 	load: function() {
-		var payload;
-		fetchGZ(docdatagz, (resp) => {payload = resp;});
 		return Promise.all([
 			uci.load('homeproxy'),
-			L.resolveDefault(payload, 'Not here')
+			L.resolveDefault(hp.unb64gz(docdatagz), 'Not here')
 		]);
 	},
 
 	render: function(data) {
-		var m, s, o,
-			docdata = 'base64,' + btoa(data[1]);
+		var m, s, o;
+
+		var docdata = 'base64,' + btoa(data[1]);
 
 		m = new form.Map('homeproxy', _('Edit ruleset'));
 

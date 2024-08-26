@@ -185,6 +185,20 @@ const methods = {
 		}
 	},
 
+	unb64gz: {
+		call: function(b64gzstr) {
+			let data = null;
+
+			const fd = popen('echo "' + b64gzstr + '" | base64 -d | gzip -d', 'r');
+			if (fd) {
+				data = fd.read('all');
+				fd.close();
+			}
+
+			return data;
+		}
+	},
+
 	resources_get_version: {
 		args: { type: 'type', repo: 'repo' },
 		call: function(req) {

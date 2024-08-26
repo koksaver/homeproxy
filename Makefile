@@ -11,7 +11,7 @@ LUCI_DEPENDS:= \
 	+chinadns-ng \
 	+firewall4 \
 	+kmod-nft-tproxy \
-	+unzip
+	+unzip +coreutils-base64
 
 PKG_NAME:=luci-app-homeproxy
 
