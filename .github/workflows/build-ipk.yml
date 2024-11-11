@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - 'master'
-      - 'dev'
+      - 'dev/1.10'
     paths:
       - 'htdocs/**'
       - 'po/**'
