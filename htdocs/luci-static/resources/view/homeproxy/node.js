@@ -1096,7 +1096,7 @@ function renderNodeSettings(section, data, features, main_node, routing_mode, su
 	o.depends('tls', '1');
 	o.modalonly = true;
 
-	o = s.option(form.MultiValue, 'tls_cipher_suites', _('Cipher suites'),
+	o = s.option(hp.CBIStaticList, 'tls_cipher_suites', _('Cipher suites'),
 		_('The elliptic curves that will be used in an ECDHE handshake, in preference order. If empty, the default will be used.'));
 	for (var i of hp.tls_cipher_suites)
 		o.value(i);
@@ -1445,15 +1445,19 @@ return view.extend({
 
 		o = s.taboption('subscription', form.ListValue, 'filter_nodes', _('Filter nodes'),
 			_('Drop/keep specific nodes from subscriptions.'));
-		o.value('', _('Disable'));
+		o.value('disabled', _('Disable'));
 		o.value('blacklist', _('Blacklist mode'));
 		o.value('whitelist', _('Whitelist mode'));
-		o.default = '';
+		o.default = 'disabled';
+		o.rmempty = false;
 
 		o = s.taboption('subscription', form.DynamicList, 'filter_keywords', _('Filter keywords'),
 			_('Drop/keep nodes that contain the specific keywords. <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">Regex</a> is supported.'));
-		o.depends({'filter_nodes': '', '!reverse': true});
-		o.retain = true;
+		o.depends({'filter_nodes': 'disabled', '!reverse': true});
+		o.rmempty = false;
+
+		o = s.taboption('subscription', form.Value, 'user_agent', _('User-Agent'));
+		o.placeholder = 'Wget/1.21 (HomeProxy, like v2rayN)';
 
 		o = s.taboption('subscription', form.Flag, 'allow_insecure', _('Allow insecure'),
 			_('Allow insecure connection by default when add nodes from subscriptions.') +
